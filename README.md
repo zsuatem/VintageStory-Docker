@@ -1,14 +1,14 @@
 <div align="center">
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/zsuatem/VintageStory-Docker/Build%20Vintage%20Story%20Docker%20image/master?label=image%20build&style=flat-square)
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/zsuatem/VintageStory-Docker/Build%20Vintage%20Story%20Docker%20image/master?label=image%20build&style=flat-square)](https://github.com/zsuatem/VintageStory-Docker)
 
-![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zsuatem/vintagestory/stable?label=latest%20stable%20version&style=flat-square)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zsuatem/vintagestory/stable?label=latest%20stable%20version&style=flat-square)](https://hub.docker.com/r/zsuatem/vintagestory)
 
-![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zsuatem/vintagestory/unstable?label=latest%20unstable%20version&style=flat-square)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zsuatem/vintagestory/unstable?label=latest%20unstable%20version&style=flat-square)](https://hub.docker.com/r/zsuatem/vintagestory)
 
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/zsuatem/vintagestory?style=flat-square)
-![Docker Pulls](https://img.shields.io/docker/pulls/zsuatem/vintagestory?style=flat-square)
-![Docker Stars](https://img.shields.io/docker/stars/zsuatem/vintagestory?style=flat-square)
+[![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/zsuatem/vintagestory?style=flat-square)](https://hub.docker.com/r/zsuatem/vintagestory)
+[![Docker Pulls](https://img.shields.io/docker/pulls/zsuatem/vintagestory?style=flat-square)](https://hub.docker.com/r/zsuatem/vintagestory)
+[![Docker Stars](https://img.shields.io/docker/stars/zsuatem/vintagestory?style=flat-square)](https://hub.docker.com/r/zsuatem/vintagestory)
 
 </div>
 
