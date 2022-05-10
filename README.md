@@ -49,7 +49,7 @@ The `data` folder contains:
 `-- servermagicnumbers.json
 ```
 
-If you do not want to mount any file or folder you can copy the file from the server to the container using `docker cp` e.g. `docker cp ./serverconfig.json vintagestory:/vsserverdata/serverconfig.json`.
+If you do not want to mount any file or folder you can copy the file from the server to the container using `docker cp` e.g. `docker cp ./serverconfig.json vintagestory:/vintagestory/data/serverconfig.json`.
 
 ## Access to console
 You can easily access the console using `docker attach vintagestory` where "vintagestory" is the container name.
