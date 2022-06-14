@@ -10,7 +10,7 @@ on:
         type: choice
         options:
           - stable
-          - unstable
+          - pre
       version:
         description: "Game version MAJOR.MINOR.PATCH"
         required: true
@@ -56,8 +56,8 @@ jobs:
             ${{ secrets.DOCKER_HUB_USERNAME }}/vintagestory:${{ github.event.inputs.minor_version }}
             ${{ secrets.DOCKER_HUB_USERNAME }}/vintagestory:${{ github.event.inputs.version }}
 
-      - name: Build and push (unstable)
-        if: ${{ github.event.inputs.release_type == 'unstable' }}
+      - name: Build and push (pre)
+        if: ${{ github.event.inputs.release_type == 'pre' }}
         uses: docker/build-push-action@v2
         with:
           context: .
