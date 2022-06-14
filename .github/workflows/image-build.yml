@@ -68,5 +68,5 @@ jobs:
             VERSION=${{ github.event.inputs.version }}
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/vintagestory:${{ github.event.inputs.release_type }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/vintagestory:unstable
             ${{ secrets.DOCKER_HUB_USERNAME }}/vintagestory:${{ github.event.inputs.version }}
