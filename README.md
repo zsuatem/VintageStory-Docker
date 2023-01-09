@@ -1,6 +1,6 @@
 <div align="center">
 
-[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/zsuatem/VintageStory-Docker/Build%20Vintage%20Story%20Docker%20image/master?label=image%20build&style=flat-square)](https://github.com/zsuatem/VintageStory-Docker)
+[![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/zsuatem/VintageStory-Docker/image-build.yml?branch=master&label=image%20build&style=flat-square)](https://github.com/zsuatem/VintageStory-Docker)
 
 [![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/zsuatem/vintagestory/stable?label=latest%20stable%20version&style=flat-square)](https://hub.docker.com/r/zsuatem/vintagestory)
 
