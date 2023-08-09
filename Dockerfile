@@ -16,6 +16,7 @@ WORKDIR /vintagestory
 COPY --from=downloaded /downloads /vintagestory
 
 VOLUME [ "/vintagestory/data" ]
+RUN chmod +x ./VintagestoryServer
 
 EXPOSE 42420/tcp
 CMD ./VintagestoryServer --dataPath ./data
