@@ -59,7 +59,7 @@ jobs:
 
       - name: Build and push (unstable)
         if: ${{ github.event.inputs.release_type == 'unstable' }}
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -74,7 +74,7 @@ jobs:
 
       - name: Build and push (pre)
         if: ${{ github.event.inputs.release_type == 'pre' }}
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
