@@ -46,7 +46,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           build-args: |
             RELEASE_TYPE=${{ github.event.inputs.release_type }}
             VERSION=${{ github.event.inputs.version }}
@@ -63,7 +63,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           build-args: |
             RELEASE_TYPE=${{ github.event.inputs.release_type }}
             VERSION=${{ github.event.inputs.version }}
@@ -78,7 +78,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           build-args: |
             RELEASE_TYPE=${{ github.event.inputs.release_type }}
             VERSION=${{ github.event.inputs.version }}
