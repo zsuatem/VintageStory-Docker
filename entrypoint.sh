@@ -50,8 +50,35 @@ fi
 # Ensure data directory exists
 mkdir -p /vintagestory/data
 
-# Only chown if directory is empty (new installation)
-if [ -z "$(ls -A /vintagestory/data 2>/dev/null)" ]; then
+# Handle existing installations
+if [ -n "$(ls -A /vintagestory/data 2>/dev/null)" ]; then
+    # Only fix root-owned files if we're NOT running as root
+    # If user wants to run as root (PUID=0), leave files as-is
+    if [ "$PUID" != "0" ]; then
+        # Check if we've already fixed permissions (marker file exists)
+        MARKER_FILE="/vintagestory/data/.permissions_fixed"
+        
+        if [ ! -f "$MARKER_FILE" ]; then
+            # Check for files owned by root (created by old image version that ran as root)
+            ROOT_FILES=$(find /vintagestory/data -user 0 -print -quit 2>/dev/null)
+            
+            if [ -n "$ROOT_FILES" ]; then
+                echo "🔧 Detected files owned by root (created by previous image version)"
+                echo "   Fixing ownership to $PUID:$PGID..."
+                echo "   This may take a moment..."
+                chown -R "$PUID:$PGID" /vintagestory/data 2>/dev/null || {
+                    echo "   ⚠️  Could not change ownership of some files"
+                    echo "   This should not affect operation if data directory itself is writable"
+                }
+                echo "   ✅ Done!"
+            fi
+            
+            # Create marker file to skip this check on future starts
+            touch "$MARKER_FILE" 2>/dev/null || true
+        fi
+    fi
+else
+    # Empty directory - new installation
     chown "$PUID:$PGID" /vintagestory/data
 fi
 
