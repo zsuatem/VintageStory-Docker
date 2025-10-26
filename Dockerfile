@@ -24,10 +24,10 @@ ARG VERSION="1.21.5"
 ENV PUID=1000
 ENV PGID=1000
 
-# Install gosu for user switching
+# Install gosu for user switching and procps for healthcheck
 RUN set -eux; \
     apt-get update; \
-    apt-get install -y gosu; \
+    apt-get install -y gosu procps; \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=downloaded /downloads /vintagestory
