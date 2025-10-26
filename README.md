@@ -216,6 +216,22 @@ If you see permission errors when the container starts:
 ## Container Runs as Root (Security Warning)
 If you see warnings about running as root, this means you have data from an older version. For better security, consider migrating to non-root as described in the [Migration section](#migration-from-root-to-non-root).
 
+## Healthcheck Causing Restarts
+The image includes a healthcheck that verifies the server process is running. If your server takes a long time to start or you experience unexpected restarts, you can disable the healthcheck in docker-compose:
+
+```yml
+services:
+    vintagestory:
+        # ... other config ...
+        healthcheck:
+            disable: true
+```
+
+Or in docker run:
+```bash
+docker run --no-healthcheck ...
+```
+
 # Useful URLs
 
 - **Official game site:** [Vintage Story](https://www.vintagestory.at/)

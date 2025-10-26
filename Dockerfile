@@ -47,7 +47,7 @@ RUN set -eux; \
 EXPOSE 42420/tcp
 EXPOSE 42420/udp
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
     CMD pgrep -f VintagestoryServer >/dev/null || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
