@@ -2,7 +2,7 @@
 FROM ubuntu:latest AS downloaded
 WORKDIR /downloads
 
-ARG VERSION="1.22.0-pre.3"
+ARG VERSION="1.21.7"
 ARG RELEASE_TYPE="stable"
 
 RUN set -eux; \
@@ -16,10 +16,10 @@ RUN set -eux; \
     rm "vs_server_linux-x64_${VERSION}.tar.gz"
 
 # Run server
-FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 WORKDIR /vintagestory
 
-ARG VERSION="1.22.0-pre.3"
+ARG VERSION="1.21.7"
 
 ENV PUID=1000
 ENV PGID=1000
