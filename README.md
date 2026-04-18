@@ -15,6 +15,12 @@
 # About
 Simple Docker image of Vintage Story Server for `amd64`, `arm64` and `arm v7` architectures.
 
+The build detects the required `.NET` runtime before `docker build` starts by reading target framework information from `VintagestoryServer.dll`. The detected version is passed into the Dockerfile so the runtime stage stays on `mcr.microsoft.com/dotnet/runtime:<detected-version>`. In GitHub Actions the server package is downloaded once and reused in the build context, and the image build fails if that prepared server package is missing.
+
+If automatic detection from `VintagestoryServer.dll` ever fails, you can still force the runtime manually with the build arg `DOTNET_RUNTIME_VERSION`, for example `--build-arg DOTNET_RUNTIME_VERSION=8.0`.
+
+For local builds, place the extracted server files in `.server-package/server/` before running `docker build`.
+
 **Note:** Version 1.18.8+ only supports AMD64 architecture. Official ARM builds were [discontinued](https://github.com/anegostudios/VintagestoryServerArm64) as .NET 8 provides built-in ARM support, but Vintage Story still requires native AMD64 libraries. Consider using x86 emulation (QEMU) on ARM devices for newer versions.
 
 **Security:** This image runs as a non-root user (UID=1000, GID=1000) by default for better security. Legacy installations running as root are automatically detected and supported for backward compatibility.

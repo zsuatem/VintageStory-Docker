@@ -1,22 +1,7 @@
-# Download files
-FROM ubuntu:latest AS downloaded
-WORKDIR /downloads
-
-ARG VERSION="1.22.0-rc.10"
-ARG RELEASE_TYPE="unstable"
-
-RUN set -eux; \
-    apt-get update; \
-    apt-get install -y wget; \
-    rm -rf /var/lib/apt/lists/*
-
-RUN set -eux; \
-    wget "https://cdn.vintagestory.at/gamefiles/${RELEASE_TYPE}/vs_server_linux-x64_${VERSION}.tar.gz"; \
-    tar xzf "vs_server_linux-x64_${VERSION}.tar.gz"; \
-    rm "vs_server_linux-x64_${VERSION}.tar.gz"
+ARG DOTNET_RUNTIME_VERSION
 
 # Run server
-FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
+FROM mcr.microsoft.com/dotnet/runtime:${DOTNET_RUNTIME_VERSION} AS base
 WORKDIR /vintagestory
 
 ARG VERSION="1.22.0-rc.10"
@@ -24,13 +9,13 @@ ARG VERSION="1.22.0-rc.10"
 ENV PUID=1000
 ENV PGID=1000
 
-# Install gosu for user switching and procps for healthcheck
+# Install dependencies for container startup
 RUN set -eux; \
     apt-get update; \
     apt-get install -y gosu procps; \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=downloaded /downloads /vintagestory
+COPY .server-package/server/ /vintagestory/
 COPY entrypoint.sh /entrypoint.sh
 
 LABEL org.opencontainers.image.title="Vintage Story Server"
