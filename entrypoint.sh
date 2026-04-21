@@ -39,12 +39,20 @@ echo "Running with PUID=$PUID and PGID=$PGID"
 
 # Create group if it doesn't exist
 if ! getent group vsuser > /dev/null 2>&1; then
-    groupadd -g "$PGID" vsuser 2>/dev/null || true
+    # Try creating with the requested GID; if that GID is already taken by another group,
+    # retry with -o (non-unique) so the vsuser group is always created.
+    groupadd -g "$PGID" vsuser 2>/dev/null || \
+    groupadd -o -g "$PGID" vsuser 2>/dev/null || \
+    groupadd vsuser 2>/dev/null || true
 fi
 
 # Create user if it doesn't exist
 if ! id vsuser > /dev/null 2>&1; then
-    useradd -u "$PUID" -g "$PGID" -d /vintagestory vsuser 2>/dev/null || true
+    # Reference group by name so the user's primary group is definitively vsuser.
+    # If the UID is already taken, retry with -o (non-unique).
+    useradd -u "$PUID" -g vsuser -d /vintagestory vsuser 2>/dev/null || \
+    useradd -o -u "$PUID" -g vsuser -d /vintagestory vsuser 2>/dev/null || \
+    useradd -g vsuser -d /vintagestory vsuser 2>/dev/null || true
 fi
 
 # Ensure data directory exists
