@@ -23,7 +23,7 @@ For local builds, place the extracted server files in `.server-package/server/` 
 
 **Note:** Version 1.18.8+ only supports AMD64 architecture. Official ARM builds were [discontinued](https://github.com/anegostudios/VintagestoryServerArm64) as .NET 8 provides built-in ARM support, but Vintage Story still requires native AMD64 libraries. Consider using x86 emulation (QEMU) on ARM devices for newer versions.
 
-**Security:** This image runs as a non-root user (UID=1000, GID=1000) by default for better security. Legacy installations running as root are automatically detected and supported for backward compatibility.
+**Security:** This image runs as a non-root user by default for better security. Legacy installations running as root are automatically detected and supported for backward compatibility. Existing non-root installations that use a custom UID/GID should continue to pass `PUID` and `PGID` explicitly.
 
 # Quick Start
 Get started quickly with a single command:
@@ -127,12 +127,12 @@ services:
 | `PUID`   | User ID for the container process  | `1000`  |
 | `PGID`   | Group ID for the container process | `1000`  |
 
-Set these variables to match your host user/group IDs to avoid permission issues with mounted volumes.
+Set these variables to match your host user/group IDs if you want to force a specific runtime user.
 
 # User and Permissions
 
 ## Default Behavior (Recommended)
-By default, the container runs as a **non-root user** with UID=1000 and GID=1000 for better security. This is the recommended setup for new installations.
+By default, the container runs as a **non-root user** with UID=1000 and GID=1000 for new installations.
 
 ```bash
 docker run -d -p 42420:42420/tcp -p 42420:42420/udp -v vsserverdata:/vintagestory/data zsuatem/vintagestory:latest
@@ -140,7 +140,7 @@ docker run -d -p 42420:42420/tcp -p 42420:42420/udp -v vsserverdata:/vintagestor
 ```
 
 ## Custom User/Group IDs
-If you need to match specific user/group IDs on your host system (e.g., to avoid permission issues with bind mounts), you can set custom PUID and PGID:
+If you need to force specific user/group IDs on your host system (e.g., to avoid permission issues with bind mounts), you can set custom `PUID` and `PGID` explicitly:
 
 ```bash
 docker run -d \
@@ -166,6 +166,8 @@ services:
 
 ## Backward Compatibility (Legacy Installations)
 If you're upgrading from an older version that stored data as root, the container will **automatically detect** this and continue running as root for backward compatibility. You'll see a warning message suggesting migration to non-root for better security.
+
+If you're upgrading an existing non-root installation that used a custom UID/GID, keep passing the same `PUID` and `PGID` values after the upgrade.
 
 ## Migration from Root to Non-Root
 If you have an existing installation running as root and want to migrate to non-root:
@@ -206,18 +208,49 @@ If you see permission errors when the container starts:
    docker logs vintagestory
    ```
 
-2. **Fix ownership** on your host to match PUID/PGID (default 1000:1000):
+2. **Fix ownership** on your host to match the user you want the container to run as:
    ```bash
    sudo chown -R 1000:1000 /path/to/your/data
    ```
 
-3. **Or set PUID/PGID** to match your existing data:
+3. **Or set PUID/PGID** to match your existing data explicitly:
    ```bash
    # Find current ownership
    ls -ln /path/to/your/data
    # Set matching PUID/PGID
    docker run -e PUID=<uid> -e PGID=<gid> ...
    ```
+
+4. **If this is an existing non-root installation with a custom UID/GID**, keep passing the matching `PUID`/`PGID` values after upgrading.
+
+## Old `vsuser` startup bug
+If you see a startup error like this:
+
+```text
+Running with PUID=1000 and PGID=1000
+
+Starting server as vsuser (UID=1000, GID=1000)...
+
+❌ ERROR: User 1000:1000 cannot write to /vintagestory/data!
+   Current ownership: UID=1000 GID=1000
+
+   Fix permissions on your host:
+   sudo chown -R 1000:1000 /path/to/data
+   Or set PUID/PGID to match existing data ownership.
+```
+
+then you're likely running an older broken image version.
+
+That error could happen even when the data directory ownership was already correct, because the old image tried to switch to a hard-coded user named `vsuser` and failed on some base images.
+
+Fix:
+
+1. Pull the latest image again:
+   ```bash
+   docker pull zsuatem/vintagestory:latest
+   ```
+2. Recreate the container with the updated image.
+3. If your existing data uses a custom non-root UID/GID, keep passing the matching `PUID` and `PGID` values explicitly.
 
 ## Container Runs as Root (Security Warning)
 If you see warnings about running as root, this means you have data from an older version. For better security, consider migrating to non-root as described in the [Migration section](#migration-from-root-to-non-root).

@@ -6,9 +6,6 @@ WORKDIR /vintagestory
 
 ARG VERSION="1.22.0-rc.10"
 
-ENV PUID=1000
-ENV PGID=1000
-
 # Install dependencies for container startup
 RUN set -eux; \
     apt-get update; \
